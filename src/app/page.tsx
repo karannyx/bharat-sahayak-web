@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bharat-sahayak-api.onrender.com';
+
 interface Scheme {
   id: number;
   name_en: string;
@@ -205,8 +207,8 @@ export default function Home() {
     setLoading(true);
     try {
       const endpoint = query.trim()
-        ? `http://127.0.0.1:8000/api/v1/schemes/search?q=${encodeURIComponent(query)}`
-        : `http://127.0.0.1:8000/api/v1/schemes`;
+        ? `${API_BASE_URL}/api/v1/schemes/search?q=${encodeURIComponent(query)}`
+        : `${API_BASE_URL}/api/v1/schemes`;
 
       const res = await fetch(endpoint);
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
@@ -365,8 +367,8 @@ export default function Home() {
     try {
       const isEdit = modalMode === "edit";
       const url = isEdit
-        ? `http://127.0.0.1:8000/api/v1/schemes/${editingId}`
-        : `http://127.0.0.1:8000/api/v1/schemes`;
+        ? `${API_BASE_URL}/api/v1/schemes/${editingId}`
+        : `${API_BASE_URL}/api/v1/schemes`;
 
       const res = await fetch(url, {
         method: isEdit ? "PUT" : "POST",
@@ -397,7 +399,7 @@ export default function Home() {
     if (!window.confirm("Admin Confirmation: Remove this scheme permanently?")) return;
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/schemes/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/schemes/${id}`, {
         method: "DELETE",
       });
 
@@ -515,8 +517,8 @@ export default function Home() {
             <button
               onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
               className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition ${showBookmarksOnly
-                  ? "bg-amber-500 text-white border-amber-600 shadow-sm"
-                  : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
+                ? "bg-amber-500 text-white border-amber-600 shadow-sm"
+                : "bg-white border-slate-300 text-slate-700 hover:bg-slate-50"
                 }`}
             >
               <span>{showBookmarksOnly ? "★" : "☆"}</span>
@@ -637,8 +639,8 @@ export default function Home() {
                     setCurrentPage(1);
                   }}
                   className={`px-3 py-1.5 rounded-lg font-medium border flex items-center gap-1.5 transition ${eligibilityRole === item.role
-                      ? "bg-blue-700 border-blue-700 text-white shadow-sm"
-                      : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                    ? "bg-blue-700 border-blue-700 text-white shadow-sm"
+                    : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                     }`}
                 >
                   <span>{item.icon}</span>
@@ -658,8 +660,8 @@ export default function Home() {
                   key={tag.label}
                   onClick={() => handleQuickFilter(tag.label, tag.query)}
                   className={`px-3 py-1 rounded-md text-xs font-medium border transition ${isActive
-                      ? "bg-slate-900 border-slate-900 text-white"
-                      : "bg-white border-slate-200 text-slate-600 hover:border-slate-400"
+                    ? "bg-slate-900 border-slate-900 text-white"
+                    : "bg-white border-slate-200 text-slate-600 hover:border-slate-400"
                     }`}
                 >
                   {label}
@@ -848,8 +850,8 @@ export default function Home() {
                 >
                   <div
                     className={`max-w-[85%] p-2.5 rounded-xl ${msg.sender === "user"
-                        ? "bg-blue-600 text-white rounded-br-none"
-                        : "bg-white text-slate-800 border border-slate-200 shadow-sm rounded-bl-none"
+                      ? "bg-blue-600 text-white rounded-br-none"
+                      : "bg-white text-slate-800 border border-slate-200 shadow-sm rounded-bl-none"
                       }`}
                   >
                     {msg.text}
